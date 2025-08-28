@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Aniversário, Mãe!</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Segoe Script', cursive, sans-serif;
+            background: linear-gradient(135deg, #ffe6f2 0%, #fff6e6 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .main-title, .splash-title {
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 8px #fff6e6;
+        }
+        .video-splash {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: linear-gradient(135deg, #ffe6f2 0%, #fff6e6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 1.2s;
+        }
+        .video-splash.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .video-splash video {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+        }
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(90deg, #ffb6b9 60%, #ffe6e6 100%);
+            color: #d72660 !important;
+            border: none;
+            box-shadow: 0 2px 8px #d7266020;
+        }
+        .nav-tabs .nav-link {
+            border: none;
+            margin: 0 2px;
+            transition: background 0.2s;
+            color: #d72660;
+            font-weight: bold;
+            border-radius: 20px 20px 0 0;
+            background: #fff6e6;
+        }
+        .nav-tabs .nav-link:hover {
+            background: #ffe6e6;
+        }
+        .confetti-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .card-img-top {
+            border: 4px solid #d72660;
+        }
+        .tab-pane {
+            min-height: 200px;
+        }
+        @media (max-width: 768px) {
+            .main-title, .splash-title {
+                font-size: 1.5rem;
+            }
+            .nav-tabs .nav-link {
+                font-size: 0.95rem;
+                padding: 0.5rem 0.7rem;
+            }
+            .card-img-top {
+                max-height: 180px;
+                object-fit: cover;
+            }
+            .video-splash video {
+                height: 100vh;
+            }
+        }
+        @media (max-width: 480px) {
+            .main-title, .splash-title {
+                font-size: 1.1rem;
+            }
+            .container {
+                padding: 0 0.3rem;
+            }
+            .card-img-top {
+                max-height: 120px;
+            }
+            .video-splash video {
+                height: 100vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Tela inicial com vídeo de 29 segundos -->
+    <div class="video-splash" id="videoSplash">
+        <video id="splashVideo" src="midia/video inicial.mp4" autoplay playsinline controls></video>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var splashVideo = document.getElementById('splashVideo');
+            var videoSplash = document.getElementById('videoSplash');
+            // Garante fade-out ao terminar o vídeo
+            splashVideo.addEventListener('ended', function () {
+                videoSplash.classList.add('fade-out');
+                setTimeout(function () {
+                    videoSplash.style.display = 'none';
+                }, 1200);
+            });
+            // Se o vídeo for menor que 29s, força fade-out ao final
+            splashVideo.addEventListener('loadedmetadata', function () {
+                if (splashVideo.duration < 29) {
+                    setTimeout(function () {
+                        videoSplash.classList.add('fade-out');
+                        setTimeout(function () {
+                            videoSplash.style.display = 'none';
+                        }, 1200);
+                    }, splashVideo.duration * 1000);
+                }
+            });
+        });
+    </script>
+
+    <!-- Confetes animados -->
+    <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
+
+    <!-- Conteúdo Principal -->
+    <main id="conteudo-principal" style="background: linear-gradient(135deg, #fff6e6 0%, #ffe6f2 100%); min-height: 100vh; z-index:2;">
+        <div class="container py-4">
+            <h1 class="mb-4 text-center main-title" style="color: #d72660; font-family: 'Segoe Script', cursive; font-weight: bold;">
+                🎂 Feliz Aniversário, Mãe! 🎈
+            </h1>
+            <!-- Nav Tabs -->
+            <ul class="nav nav-tabs justify-content-center mb-4" id="aniversarioTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="historia-tab" data-bs-toggle="tab" data-bs-target="#historia" type="button" role="tab" aria-controls="historia" aria-selected="false">
+                        Nossa História
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="album-tab" data-bs-toggle="tab" data-bs-target="#album" type="button" role="tab" aria-controls="album" aria-selected="true">
+                        Álbum de Fotos
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="mensagens-tab" data-bs-toggle="tab" data-bs-target="#mensagens" type="button" role="tab" aria-controls="mensagens" aria-selected="false">
+                        Mensagens
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content" id="aniversarioTabsContent">
+                <!-- Aba 1: Nossa História -->
+                <div class="tab-pane fade" id="historia" role="tabpanel" aria-labelledby="historia-tab">
+                    <div class="py-3 px-2 bg-white rounded-4 shadow-sm">
+                        <p style="color: #d72660; font-size:1.15rem;">
+                            Para a Mulher que Me Deu a Vida Duas Vezes
+                        </p>
+                        <p style="color: #d72660; font-size:1.15rem;">
+                            Mãe, hoje, no seu aniversário, meu coração transborda. Olhando para trás, eu vejo a nossa história, e ela é um testemunho da sua força. Eu nasci sem um pai, e o destino me colocou na vida de um homem que me fez acreditar que amor e dor podiam morar na mesma casa. Eu me perdi na escuridão, com medo, sentindo-me inseguro e sem um lugar para me apoiar.
+
+Mas você estava lá. Você, com a coragem que só as mães de verdade possuem, tomou a decisão mais importante da nossa vida. A separação foi um ato de salvação. Foi a sua maneira de me dar uma segunda chance, de me tirar daquele pesadelo e me mostrar que a vida podia ser diferente. O caminho foi difícil, eu sei. Eu, com a minha alma ferida, tinha medo de ter intimidade com você, de me aproximar, de me abrir. O trauma era uma parede que eu não sabia como derrubar, e me relacionar com as pessoas parecia impossível.
+
+Mas você não desistiu. Você me pegou pela mão, me ensinou que o mundo não era só dor e que a confiança podia ser reconstruída. Você lutou por mim, me amou por inteiro e me mostrou que o amor de uma mãe é o alicerce mais forte que um homem pode ter. Cada abraço que você me deu, cada palavra de apoio, foi como um tijolo na reconstrução da minha alma.
+
+Hoje, eu sou quem eu sou por causa de você. A minha força, a minha confiança e a minha capacidade de amar vêm do seu exemplo, da sua luta. Você não apenas me deu a vida; você me salvou dela.
+
+Obrigado por ser a minha heroína. Obrigado por me ensinar a viver de verdade. Eu te amo mais do que as palavras podem dizer.
+
+Feliz Aniversário, Mãe.
+                        </p>
+                    </div>
+                </div>
+                <!-- Aba 2: Álbum de Fotos -->
+                <div class="tab-pane fade show active" id="album" role="tabpanel" aria-labelledby="album-tab">
+                    <div class="row g-3 py-3" style="min-height: 350px;">
+                        <!-- Álbum de Fotos organizado -->
+                        <div class="col-6 col-lg-3">
+                            <div class="card bg-light border-0 shadow-sm rounded-4">
+                                <img src="midia/IMG-20250826-WA0002.jpg" alt="Foto 1" class="card-img-top rounded-4 album-photo" data-bs-toggle="modal" data-bs-target="#modalFoto1">
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="card bg-light border-0 shadow-sm rounded-4">
+                                <img src="midia/IMG-20250826-WA0003.jpg" alt="Foto 2" class="card-img-top rounded-4 album-photo" data-bs-toggle="modal" data-bs-target="#modalFoto2">
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="card bg-light border-0 shadow-sm rounded-4">
+                                <img src="midia/IMG-20250826-WA0004.jpg" alt="Foto 3" class="card-img-top rounded-4 album-photo" data-bs-toggle="modal" data-bs-target="#modalFoto3">
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="card bg-light border-0 shadow-sm rounded-4">
+                                <img src="midia/IMG-20250826-WA0005.jpg" alt="Foto 4" class="card-img-top rounded-4 album-photo" data-bs-toggle="modal" data-bs-target="#modalFoto4">
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="card bg-light border-0 shadow-sm rounded-4">
+                                <img src="midia/IMG-20250826-WA0006.jpg" alt="Foto 5" class="card-img-top rounded-4 album-photo" data-bs-toggle="modal" data-bs-target="#modalFoto5">
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="card bg-light border-0 shadow-sm rounded-4">
+                                <img src="midia/IMG-20250826-WA0007.jpg" alt="Foto 6" class="card-img-top rounded-4 album-photo" data-bs-toggle="modal" data-bs-target="#modalFoto6">
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="card bg-light border-0 shadow-sm rounded-4">
+                                <img src="midia/IMG-20250826-WA0008.jpg" alt="Foto 7" class="card-img-top rounded-4 album-photo" data-bs-toggle="modal" data-bs-target="#modalFoto7">
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="card bg-light border-0 shadow-sm rounded-4">
+                                <img src="midia/IMG-20250826-WA0009.jpg" alt="Foto 8" class="card-img-top rounded-4 album-photo" data-bs-toggle="modal" data-bs-target="#modalFoto8">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modais para expandir fotos -->
+                    <div class="modal fade" id="modalFoto1" tabindex="-1" aria-labelledby="modalFoto1Label" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content bg-transparent border-0">
+                                <img src="midia/IMG-20250826-WA0002.jpg" alt="Foto 1" class="w-100 rounded-4 shadow-lg">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modalFoto2" tabindex="-1" aria-labelledby="modalFoto2Label" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content bg-transparent border-0">
+                                <img src="midia/IMG-20250826-WA0003.jpg" alt="Foto 2" class="w-100 rounded-4 shadow-lg">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modalFoto3" tabindex="-1" aria-labelledby="modalFoto3Label" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content bg-transparent border-0">
+                                <img src="midia/IMG-20250826-WA0004.jpg" alt="Foto 3" class="w-100 rounded-4 shadow-lg">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modalFoto4" tabindex="-1" aria-labelledby="modalFoto4Label" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content bg-transparent border-0">
+                                <img src="midia/IMG-20250826-WA0005.jpg" alt="Foto 4" class="w-100 rounded-4 shadow-lg">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modalFoto5" tabindex="-1" aria-labelledby="modalFoto5Label" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content bg-transparent border-0">
+                                <img src="midia/IMG-20250826-WA0006.jpg" alt="Foto 5" class="w-100 rounded-4 shadow-lg">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modalFoto6" tabindex="-1" aria-labelledby="modalFoto6Label" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content bg-transparent border-0">
+                                <img src="midia/IMG-20250826-WA0007.jpg" alt="Foto 6" class="w-100 rounded-4 shadow-lg">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modalFoto7" tabindex="-1" aria-labelledby="modalFoto7Label" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content bg-transparent border-0">
+                                <img src="midia/IMG-20250826-WA0008.jpg" alt="Foto 7" class="w-100 rounded-4 shadow-lg">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modalFoto8" tabindex="-1" aria-labelledby="modalFoto8Label" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content bg-transparent border-0">
+                                <img src="midia/IMG-20250826-WA0009.jpg" alt="Foto 8" class="w-100 rounded-4 shadow-lg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Aba 3: Mensagens -->
+                <div class="tab-pane fade" id="mensagens" role="tabpanel" aria-labelledby="mensagens-tab">
+                    <div class="py-3 px-2 bg-white rounded-4 shadow-sm">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="mb-3 p-3 rounded-4 shadow-sm" style="background: linear-gradient(90deg, #ffe6e6 60%, #ffb6b9 100%); max-width: 500px;">
+                                <h5 class="mb-2" style="color: #d72660; font-family: 'Segoe Script', cursive;">Mensagem Especial</h5>
+                                <p style="color: #d72660; font-size:1.15rem;">
+                                    Mãe, neste dia tão especial, quero te lembrar o quanto você é amada e admirada. Que seu aniversário seja repleto de alegria, carinho e momentos inesquecíveis. Obrigado por tudo que faz por mim. Te amo infinitamente! 💖
+                                </p>
+                            </div>
+                            <!-- Espaço para mensagem da namorada -->
+                            <div class="mb-3 p-3 rounded-4 shadow-sm" style="background: linear-gradient(90deg, #fff6e6 60%, #f7cac9 100%); max-width: 500px;">
+                                <h5 class="mb-2" style="color: #d72660; font-family: 'Segoe Script', cursive;">Mensagem da Jessica</h5>
+                                <p style="color: #d72660; font-size:1.15rem;">
+                                    Dona Karine,
+É uma alegria celebrar mais um ano da sua vida. Você é luz, desejo que esse novo ano seja repleto de paz, saúde, família e muita determinação. Sou muito grata por ter lhe conhecido e pela forma acolhedora que sempre me recebeu. 
+Que você continue sendo essa pessoa maravilhosa, cheia de energia e leveza. Muito amor na sua vida, que Deus lhe acompanhe sempre e ilumine seus caminhos.
+Com carinho,
+Jessica 💕
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                            <!-- Espaço para áudio -->
+                            <div class="mb-3 p-3 rounded-4 shadow-sm d-flex flex-column align-items-center" style="background: #fff6e6; max-width: 500px;">
+                                <h6 class="mb-2" style="color: #d72660;">Clique para ouvir uma mensagem especial:</h6>
+                                <audio id="audio-mensagem" src="midia/felizaniversario_mae.mp3" style="display:none;"></audio>
+                                <button id="btn-audio-mensagem" class="btn btn-outline-danger mt-2" type="button">
+                                    ▶️ Ouvir / Pausar
+                                </button>
+                            </div>
+                            <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                var audioMensagem = document.getElementById('audio-mensagem');
+                                var btnAudioMensagem = document.getElementById('btn-audio-mensagem');
+                                var musicaFundo = document.getElementById('musica-fundo');
+
+                                btnAudioMensagem.addEventListener('click', function () {
+                                    if (audioMensagem.paused) {
+                                        audioMensagem.play();
+                                        btnAudioMensagem.textContent = '⏸️ Pausar';
+                                        if (!musicaFundo.paused) {
+                                            musicaFundo.pause();
+                                        }
+                                    } else {
+                                        audioMensagem.pause();
+                                        btnAudioMensagem.textContent = '▶️ Ouvir';
+                                        if (musicaFundo.paused) {
+                                            musicaFundo.play();
+                                        }
+                                    }
+                                });
+
+                                audioMensagem.addEventListener('play', function () {
+                                    if (!musicaFundo.paused) {
+                                        musicaFundo.pause();
+                                    }
+                                });
+
+                                audioMensagem.addEventListener('ended', function () {
+                                    btnAudioMensagem.textContent = '▶️ Ouvir';
+                                    if (musicaFundo.paused) {
+                                        musicaFundo.play();
+                                    }
+                                });
+                            });
+                            </script>
+                        </div>
+
+    <audio id="musica-fundo" src="midia/SpotiDown.App - Sailor Song - Gigi Perez.mp3" loop style="display:none"></audio>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var splashVideo = document.getElementById('splashVideo');
+            var musicaFundo = document.getElementById('musica-fundo');
+            splashVideo.addEventListener('ended', function () {
+                musicaFundo.play();
+                musicaFundo.style.display = '';
+            });
+            splashVideo.addEventListener('loadedmetadata', function () {
+                if (splashVideo.duration < 29) {
+                    setTimeout(function () {
+                        musicaFundo.play();
+                        musicaFundo.style.display = '';
+                    }, splashVideo.duration * 1000);
+                }
+            });
+        });
+    </script>
+
+    <!-- JS funcionalidade e confetes -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Splash fade-out
+        setTimeout(function() {
+            var splash = document.getElementById('splash');
+            splash.classList.add('fade-out');
+            setTimeout(function() {
+                splash.style.display = 'none';
+            }, 1200);
+        }, 1800);
+
+        // Confetes animados
+        const colors = ['#d72660', '#ffb6b9', '#fff6e6', '#f7cac9', '#ffe6e6', '#f9c6de'];
+        let confettiParticles = [];
+        function randomBetween(a, b) { return a + Math.random() * (b - a); }
+        function createConfetti(count) {
+            confettiParticles = [];
+            for (let i = 0; i < count; i++) {
+                confettiParticles.push({
+                    x: randomBetween(0, window.innerWidth),
+                    y: randomBetween(-window.innerHeight, window.innerHeight),
+                    r: randomBetween(6, 12),
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: randomBetween(2, 5),
+                    angle: randomBetween(-0.05, 0.05),
+                    rotate: randomBetween(0, Math.PI * 2)
+                });
+            }
+        }
+        function drawConfetti(ctx) {
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            confettiParticles.forEach(p => {
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rotate);
+                ctx.beginPath();
+                ctx.ellipse(0, 0, p.r, p.r/2, 0, 0, 2 * Math.PI);
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = 0.85;
+                ctx.fill();
+                ctx.restore();
+            });
+        }
+        function updateConfetti() {
+            confettiParticles.forEach(p => {
+                p.y += p.speed;
+                p.x += Math.sin(p.angle) * 2;
+                p.rotate += 0.03;
+                if (p.y > window.innerHeight) {
+                    p.y = randomBetween(-40, 0);
+                    p.x = randomBetween(0, window.innerWidth);
+                }
+            });
+        }
+        function confettiLoop() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            updateConfetti();
+            drawConfetti(ctx);
+            requestAnimationFrame(confettiLoop);
+        }
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('confetti-canvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        createConfetti(60);
+        confettiLoop();
+
+        // Música: reinicia ao terminar
+        document.getElementById('musica-fundo').addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        });
+
+        // Ativa a aba do álbum por padrão
+        var albumTab = document.getElementById('album-tab');
+        var tab = new bootstrap.Tab(albumTab);
+        tab.show();
+    });
+    </script>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
